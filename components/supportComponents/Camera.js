@@ -1,27 +1,25 @@
-import {StatusBar} from 'expo-status-bar'
+import { StatusBar } from 'expo-status-bar'
 import React, { useEffect } from 'react'
-import {StyleSheet, Text, View, TouchableOpacity, ImageBackground} from 'react-native'
-import {Camera} from 'expo-camera'
-
+import { StyleSheet, View, TouchableOpacity, ImageBackground, Alert } from 'react-native'
+import { Camera } from 'expo-camera'
 
 export default function App() {
   const [previewVisible, setPreviewVisible] = React.useState(false)
   const [capturedImage, setCapturedImage] = React.useState(null)
 
   useEffect(() => async () => {
-    const {status} = await Camera.requestCameraPermissionsAsync()
+    const { status } = await Camera.requestCameraPermissionsAsync()
     if (status === 'granted') {
       // start the camera
-      console.log("Permission given")
+      console.log('Permission given')
     } else {
       Alert.alert('Access denied')
     }
-  }, []);
-
+  }, [])
 
   const __takePicture = async () => {
-    if (!camera) return
-    const photo = await camera.takePictureAsync()
+    if (!Camera) return
+    const photo = await Camera.takePictureAsync()
     console.log(photo)
     setPreviewVisible(true)
     setCapturedImage(photo)
@@ -29,57 +27,55 @@ export default function App() {
 
   return (
     <View style={styles.container}>
-        {((previewVisible && capturedImage) ? (
+      {((previewVisible && capturedImage)
+        ? (
           <CameraPreview photo={capturedImage} />
-        ) :
-          (
-        <Camera
-          style={{flex: 1,width:"100%"}}
-          ref={(r) => {
-            camera = r
-          }}
-        >
+        )
+        : (
+          <Camera
+            style={{ flex: 1, width: '100%' }}
+          >
+            <View
+              style={{
+                flex: 1,
+                width: '100%',
+                backgroundColor: 'transparent',
+                flexDirection: 'row'
+              }}
+            >
               <View
                 style={{
+                  position: 'absolute',
+                  bottom: 0,
+                  flexDirection: 'row',
                   flex: 1,
                   width: '100%',
-                  backgroundColor: 'transparent',
-                  flexDirection: 'row'
+                  padding: 20,
+                  justifyContent: 'space-between'
                 }}
               >
                 <View
                   style={{
-                    position: 'absolute',
-                    bottom: 0,
-                    flexDirection: 'row',
+                    alignSelf: 'center',
                     flex: 1,
-                    width: '100%',
-                    padding: 20,
-                    justifyContent: 'space-between'
+                    alignItems: 'center'
                   }}
                 >
-                  <View
+                  <TouchableOpacity
+                    onPress={__takePicture}
                     style={{
-                      alignSelf: 'center',
-                      flex: 1,
-                      alignItems: 'center'
+                      width: 70,
+                      height: 70,
+                      bottom: 0,
+                      borderRadius: 50,
+                      backgroundColor: '#fff'
                     }}
-                  >
-                    <TouchableOpacity
-                      onPress={__takePicture}
-                      style={{
-                        width: 70,
-                        height: 70,
-                        bottom: 0,
-                        borderRadius: 50,
-                        backgroundColor: '#fff'
-                      }}
-                    />
-                  </View>
+                  />
                 </View>
               </View>
-        </Camera>
-      ))
+            </View>
+          </Camera>
+        ))
       }
 
       <StatusBar style="auto" />
@@ -87,7 +83,7 @@ export default function App() {
   )
 }
 
-const CameraPreview = ({photo}) => {
+const CameraPreview = (photo) => {
   console.log('sdsfds', photo)
   return (
     <View
@@ -99,7 +95,7 @@ const CameraPreview = ({photo}) => {
       }}
     >
       <ImageBackground
-        source={{uri: photo && photo.uri}}
+        source={{ uri: photo && photo.uri }}
         style={{
           flex: 1
         }}
@@ -110,7 +106,7 @@ const CameraPreview = ({photo}) => {
 
 const styles = StyleSheet.create({
   container: {
-    width:"100%",
-    height:"100%"
+    width: '100%',
+    height: '100%'
   }
 })
