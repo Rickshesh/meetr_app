@@ -1,6 +1,7 @@
 import { StyleSheet, Text, View } from 'react-native';
 import {  MD3LightTheme as DefaultTheme, Provider as PaperProvider} from "react-native-paper";
 import DriverDetails from './components/DriverDetails';
+import CameraModule from './components/supportComponents/Camera';
 import TopBar from './components/TopBar';
 
 const theme = {
@@ -12,6 +13,7 @@ const theme = {
     darkPurple: '#4C243B',
     middlePurple: "#785B6B",
     lightPurple: "#A4919B",
+    verylightPurple: "#FAF9F9",
     whiteBackground: "#FBFEFB",
     lightYellow:"#FCEBB1",
     middleYellow:"#FBDA60",
@@ -24,7 +26,7 @@ export default function App() {
     <PaperProvider theme={theme}>
     <View style={styles.container}>
     <TopBar />
-    <DriverDetails/>
+    <DriverDetails />
     </View>
     </PaperProvider>
   );
